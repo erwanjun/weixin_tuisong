@@ -90,23 +90,7 @@
 
 这里面的每一个{{***.DATA}}都对应相应的数据，需要就保留，不需要就删掉，不想理解这些东西就直接放在这里不用删除也可以
 
-## 安装python3 
 
-官方网站: https://www.python.org/getit/
-
-<img src="assets/image-20220818134346962.png" alt="image-20220818134346962" style="zoom: 33%;" />
-
-**记住在安装后需要配置系统环境PATH,具体教程网上可搜！！重要！**
-
-## 安装requests包
-
-打开cmd命令行，执行以下命令
-
-```commandline
-pip3 install requests
-```
-
-这里不做具体介绍，很简单，网上可以直接搜索到
 
 ## 修改配置文件
 
@@ -200,7 +184,25 @@ notepad++安装地址：https://notepad-plus-plus.org/downloads/
 
 **###注：源码版教程适合有一定编程基础的人，完全小白实现困难。**
 
+源码版教程需要提前安装下面两项
 
+## 安装python3 
+
+官方网站: https://www.python.org/getit/
+
+<img src="assets/image-20220818134346962.png" alt="image-20220818134346962" style="zoom: 33%;" />
+
+**记住在安装后需要配置系统环境PATH,具体教程网上可搜！！重要！**
+
+## 安装requests包
+
+打开cmd命令行，执行以下命令
+
+```commandline
+pip3 install requests
+```
+
+这里不做具体介绍，很简单，网上可以直接搜索到
 
 接着申请API
 
