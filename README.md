@@ -156,23 +156,23 @@ notepad++安装地址：https://notepad-plus-plus.org/downloads/
 
 > 打开天行API官网https://www.tianapi.com/，进行注册并且认证。
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817095843680.png" alt="image-20220817095843680" style="zoom: 50%;" />
+<img src="assets/image-20220817095843680-16608050911811.png" alt="image-20220817095843680" style="zoom: 50%;" />
 
 在控制台-数据管理-我申请的接口里面点击申请接口
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817100133167.png" alt="image-20220817100133167" style="zoom: 33%;" />
+<img src="assets/image-20220817100133167-16608050938373.png" alt="image-20220817100133167" style="zoom: 33%;" />
 
 搜索后选择励志古言，并且点击申请接口。
 
 申请后如下图所示
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817100238861.png" alt="image-20220817100238861" style="zoom:50%;" />
+<img src="assets/image-20220817100238861-16608050960195.png" alt="image-20220817100238861" style="zoom:50%;" />
 
 记住一定要先点申请再测试！
 
 这里我们点击右边的在线测试
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817100314241.png" alt="image-20220817100314241" style="zoom: 50%;" />
+<img src="assets/image-20220817100314241-16608050978057.png" alt="image-20220817100314241" style="zoom: 50%;" />
 
 **这里你会得到你的key，页面不要关，这个key很重要，记下来**
 
@@ -206,11 +206,11 @@ notepad++安装地址：https://notepad-plus-plus.org/downloads/
 
 回到刚刚申请的那个页面，点击参考代码
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817100528103.png" alt="image-20220817100528103" style="zoom: 33%;" />
+<img src="assets/image-20220817100528103-16608051027239.png" alt="image-20220817100528103" style="zoom: 33%;" />
 
 选择python
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817100624360.png" alt="image-20220817100624360" style="zoom: 50%;" />
+<img src="assets/image-20220817100624360-166080510471311.png" alt="image-20220817100624360" style="zoom: 50%;" />
 
 把这串代码复制下来。然后进行测试。
 
@@ -220,21 +220,21 @@ notepad++安装地址：https://notepad-plus-plus.org/downloads/
 
 把这串参考代码复制进去
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817101002162.png" alt="image-20220817101002162" style="zoom:50%;" />
+<img src="assets/image-20220817101002162-166080510748513.png" alt="image-20220817101002162" style="zoom:50%;" />
 
 然后在第4行中把`你的APIKEY`替换成我们在前面申请的key，如下图所示
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817101131513.png" alt="image-20220817101131513" style="zoom:50%;" />
+<img src="assets/image-20220817101131513-166080510926215.png" alt="image-20220817101131513" style="zoom:50%;" />
 
 然后我们直接进行 Run Code，输出结果如下图所示
 
-![image-20220817101310802](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817101310802.png)
+![image-20220817101310802](assets/image-20220817101310802-166080511106317.png)
 
 我们发现它确实成功请求到了励志古言，其最终包含翻译以及来源，并且还有很多我们不需要的东西，我们只需要名言就行了，也就是只要提取到"saying"的值就行了
 
 由于api返回的格式为json格式，我们需要把它转换成字典格式，这里需要引用json库，在代码最前面加入 import json，并且加入一句`data = json.loads(data)`将它转换成字典格式，
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817101951579.png" alt="image-20220817101951579" style="zoom:50%;" />
+<img src="assets/image-20220817101951579-166080511280519.png" alt="image-20220817101951579" style="zoom:50%;" />
 
 然后我们提取"saying"，通过观察之前的输出结果，我们很容易发现，"saying"被放在一个字典里面，然后这个字典又被放在了列表里面，这个列表又被作为最外层字典键"newslist"的值。所以我们通过下标方式提取：
 
@@ -242,11 +242,11 @@ notepad++安装地址：https://notepad-plus-plus.org/downloads/
 
 如下图所示：
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817102338888.png" alt="image-20220817102338888" style="zoom:50%;" />
+<img src="assets/image-20220817102338888-166080511466721.png" alt="image-20220817102338888" style="zoom:50%;" />
 
 这次再运行Run Code，我们会发现它已经输出正常了：
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817102431802.png" alt="image-20220817102431802" style="zoom:50%;" />
+<img src="assets/image-20220817102431802-166080511698523.png" alt="image-20220817102431802" style="zoom:50%;" />
 
 这里我把源代码贴出来，你们加入自己的KEY，可以自行测试：
 
@@ -297,27 +297,27 @@ import json
 
 如图所示
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817103303312.png" alt="image-20220817103303312" style="zoom: 50%;" />
+<img src="assets/image-20220817103303312-166080511960225.png" alt="image-20220817103303312" style="zoom: 50%;" />
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817103523935.png" alt="image-20220817103523935" style="zoom:50%;" />
+<img src="assets/image-20220817103523935-166080512120527.png" alt="image-20220817103523935" style="zoom:50%;" />
 
 然后拉到最底下，把返回值赋予给变量lizhi
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817103704744.png" alt="image-20220817103704744" style="zoom: 50%;" />
+<img src="assets/image-20220817103704744-166080512273029.png" alt="image-20220817103704744" style="zoom: 50%;" />
 
 同时记得把lizhi这个变量加入send_message这个函数里面。
 
-然后我们找到推送消息这一行，也要把它加入send_message里面<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817103923063.png" alt="image-20220817103923063" style="zoom: 67%;" />
+然后我们找到推送消息这一行，也要把它加入send_message里面<img src="assets/image-20220817103923063-166080512473131.png" alt="image-20220817103923063" style="zoom: 67%;" />
 
 我这里多了一些pipi,pop,tip，都不用管，这个是我自己加入的其他的api，你们只需要加入一个lizhi就好啦。加多了会报错，记得直接在末尾加上就好。
 
 最后，我们找到打包post的函数
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817104219178.png" alt="image-20220817104219178" style="zoom:50%;" />
+<img src="assets/image-20220817104219178-166080512636433.png" alt="image-20220817104219178" style="zoom:50%;" />
 
 在这个位置，直接在最底下，仿照上面，加入一个lizhi
 
-<img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20220817104259864.png" alt="image-20220817104259864" style="zoom: 67%;" />
+<img src="assets/image-20220817104259864-166080512804335.png" alt="image-20220817104259864" style="zoom: 67%;" />
 
 记得放在最后面的话，花括号后面不要逗号。
 
