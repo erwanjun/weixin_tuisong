@@ -7,7 +7,7 @@ import sys
 import os
 import http.client, urllib
 import json
-
+from zhdate import ZhDate
 def get_color():
     # 获取随机颜色
     get_colors = lambda n: list(map(lambda i: "#" + "%06x" % random.randint(0, 0xFFFFFF), range(n)))
@@ -30,6 +30,40 @@ def get_access_token():
         sys.exit(1)
     # print(access_token)
     return access_token
+
+def get_birthday(birthday, year, today):
+    birthday_year = birthday.split("-")[0]
+    # 判断是否为农历生日
+    if birthday_year[0] == "r":
+        r_mouth = int(birthday.split("-")[1])
+        r_day = int(birthday.split("-")[2])
+        # 今年生日
+        birthday = ZhDate(year, r_mouth, r_day).to_datetime().date()
+        year_date = birthday
+
+
+    else:
+        # 获取国历生日的今年对应月和日
+        birthday_month = int(birthday.split("-")[1])
+        birthday_day = int(birthday.split("-")[2])
+        # 今年生日
+        year_date = date(year, birthday_month, birthday_day)
+    # 计算生日年份，如果还没过，按当年减，如果过了需要+1
+    if today > year_date:
+        if birthday_year[0] == "r":
+            # 获取农历明年生日的月和日
+            r_last_birthday = ZhDate((year + 1), r_mouth, r_day).to_datetime().date()
+            birth_date = date((year + 1), r_last_birthday.month, r_last_birthday.day)
+        else:
+            birth_date = date((year + 1), birthday_month, birthday_day)
+        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
+    elif today == year_date:
+        birth_day = 0
+    else:
+        birth_date = year_date
+        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
+    return birth_day
+
 
 
 def get_weather(province, city):
@@ -64,22 +98,6 @@ def get_weather(province, city):
     return weather, temp, tempn
 
 
-def get_birthday(birthday, year, today):
-    # 获取生日的月和日
-    birthday_month = int(birthday.split("-")[1])
-    birthday_day = int(birthday.split("-")[2])
-    # 今年生日
-    year_date = date(year, birthday_month, birthday_day)
-    # 计算生日年份，如果还没过，按当年减，如果过了需要+1
-    if today > year_date:
-        birth_date = date((year + 1), birthday_month, birthday_day)
-        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
-    elif today == year_date:
-        birth_day = 0
-    else:
-        birth_date = year_date
-        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
-    return birth_day
 
 #词霸每日一句
 def get_ciba():
@@ -96,6 +114,7 @@ def get_ciba():
         return note_ch, note_en
     else:
         return "",""
+
 
 #彩虹屁
 def caihongpi():
@@ -114,6 +133,35 @@ def caihongpi():
     else:
         return ""
 
+#健康小提示API
+def health():
+    if (health_API!="替换掉我"):
+        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+        params = urllib.parse.urlencode({'key':health_API})
+        headers = {'Content-type':'application/x-www-form-urlencoded'}
+        conn.request('POST','/healthtip/index',params,headers)
+        res = conn.getresponse()
+        data = res.read()
+        data = json.loads(data)
+        data = data["newslist"][0]["content"]
+        return data
+    else:
+        return ""
+
+#星座运势
+def lucky():
+    if (lucky_API!="替换掉我"):
+        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+        params = urllib.parse.urlencode({'key':lucky_API,'astro':astro})
+        headers = {'Content-type':'application/x-www-form-urlencoded'}
+        conn.request('POST','/star/index',params,headers)
+        res = conn.getresponse()
+        data = res.read()
+        data = json.loads(data)
+        data = "爱情指数："+str(data["newslist"][1]["content"])+"\n速配星座："+str(data["newslist"][7]["content"])+"\n工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
+        return data
+    else:
+        return ""
 
 #励志名言
 def lizhi():
@@ -147,7 +195,7 @@ def tip():
         return "",""
 
 #推送信息
-def send_message(to_user, access_token, city_name, weather, max_temperature, min_temperature, pipi, lizhi, pop, tip, note_en, note_ch):
+def send_message(to_user, access_token, city_name, weather, max_temperature, min_temperature, pipi, lizhi, pop, tips, note_en, note_ch, health_tip, lucky_):
     url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
     week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
     year = localtime().tm_year
@@ -211,6 +259,11 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
                 "color": get_color()
             },
 
+            "lucky": {
+                "value": lucky_,
+                "color": get_color()
+            },
+
             "lizhi": {
                 "value": lizhi,
                 "color": get_color()
@@ -218,6 +271,11 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
 
             "pop": {
                 "value": pop,
+                "color": get_color()
+            },
+
+            "health": {
+                "value": health_tip,
                 "color": get_color()
             },
 
@@ -278,17 +336,27 @@ if __name__ == "__main__":
     tianqi_API=config["tianqi_API"]
     #是否启用词霸每日金句
     Whether_Eng=config["Whether_Eng"]
+    #获取健康小提示API
+    health_API=config["health_API"]
+    #获取星座运势API
+    lucky_API=config["lucky_API"]
+    #获取星座
+    astro = config["astro"]
     # 获取词霸每日金句
     note_ch, note_en = get_ciba()
     #彩虹屁
     pipi = caihongpi()
+    #健康小提示
+    health_tip = health()
     #下雨概率和建议
     pop,tips = tip()
     #励志名言
     lizhi = lizhi()
+    #星座运势
+    lucky_ = lucky()
     # 公众号推送消息
     for user in users:
-        send_message(user, accessToken, city, weather, max_temperature, min_temperature, pipi, lizhi,pop,tips, note_en, note_ch)
+        send_message(user, accessToken, city, weather, max_temperature, min_temperature, pipi, lizhi,pop,tips, note_en, note_ch, health_tip, lucky_)
     import time
     time_duration = 3.5
     time.sleep(time_duration)
