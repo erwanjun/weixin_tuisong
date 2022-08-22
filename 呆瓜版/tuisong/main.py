@@ -118,7 +118,7 @@ def get_ciba():
 
 #彩虹屁
 def caihongpi():
-    if (caihongpi_API!="替换掉我"):
+    if (caihongpi_API!="否"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':caihongpi_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -135,7 +135,7 @@ def caihongpi():
 
 #健康小提示API
 def health():
-    if (health_API!="替换掉我"):
+    if (health_API!="否"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':health_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -150,7 +150,7 @@ def health():
 
 #星座运势
 def lucky():
-    if (lucky_API!="替换掉我"):
+    if (lucky_API!="否"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':lucky_API,'astro':astro})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -158,14 +158,14 @@ def lucky():
         res = conn.getresponse()
         data = res.read()
         data = json.loads(data)
-        data = "爱情指数："+str(data["newslist"][1]["content"])+"\n速配星座："+str(data["newslist"][7]["content"])+"\n工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
+        data = "速配星座："+str(data["newslist"][7]["content"])+"\n爱情指数："+str(data["newslist"][1]["content"])+"   工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
         return data
     else:
         return ""
 
 #励志名言
 def lizhi():
-    if (lizhi_API!="替换掉我"):
+    if (lizhi_API!="否"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':lizhi_API})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -180,7 +180,7 @@ def lizhi():
 
 #下雨概率和建议
 def tip():
-    if (tianqi_API!="替换掉我"):
+    if (tianqi_API!="否"):
         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
         params = urllib.parse.urlencode({'key':tianqi_API,'city':city})
         headers = {'Content-type':'application/x-www-form-urlencoded'}
@@ -310,7 +310,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
 
 if __name__ == "__main__":
     try:
-        with open("config.txt", encoding="utf-8") as f:
+        with open("config.json", encoding="utf-8") as f:
             config = eval(f.read())
     except FileNotFoundError:
         print("推送消息失败，请检查config.txt文件是否与程序位于同一路径")
