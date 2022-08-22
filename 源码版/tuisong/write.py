@@ -260,9 +260,9 @@ def get_json_data(json_path):
         params['Whether_Eng'] = Whether_Eng_out
         #修改内容
         params['caihongpi_API'] = key1_out
-        params['lizhi_API'] = key2_out
+        params['lizhi_API'] = key4_out
         params['tianqi_API'] = key3_out
-        params['health_API'] = key4_out
+        params['health_API'] = key2_out
         params['lucky_API'] = key5_out
         params['astro'] = astro_out
   
