@@ -229,11 +229,126 @@
 都是填入之后，确保消息模板里面有对应的{{***.DATA}}
 ```
 
+# 二、使用 Github 实现自动推送
+
+## 2.1 建立新的仓库
+
+由于Github在国内访问效果并不好，并且有相当一部分同学没有相应的网络环境，所以建议使用加速器来进行访问，
+
+这里建议使用steam++来进行访问，微软软件商店可以下载，名字为：Watt Toolkit
+
+![image-20220823111945519](assets/image-20220823111945519.png)
+
+<img src="assets/image-20220823112042262.png" alt="image-20220823112042262" style="zoom:50%;" />
+
+需要先选中Github，再选中点击一键加速进行加速，然后我们登录Github网站
+
+<img src="assets/image-20220823112504306.png" alt="image-20220823112504306" style="zoom: 33%;" />
+
+在储存库<img src="assets/image-20220823112553198.png" alt="image-20220823112553198" style="zoom: 50%;" />里面点击`New`，来新建一个库
+
+<img src="assets/image-20220823112756935.png" alt="image-20220823112756935" style="zoom:50%;" />
+
+在`Repository name`里面随便填个什么，我这里填的是time-push，然后下面选择`Public`
+
+然后点击`Create repository`
+
+<img src="assets/image-20220823112911223.png" alt="image-20220823112911223" style="zoom:50%;" />
+
+至此，你已经创建了一个仓库了
+
+## 2.2 实现自动推送
+
+![image-20220823113031495](assets/image-20220823113031495.png)
+
+在仓库页面点击`Actions`
+
+然后选择`Simple workflow`
+
+<img src="assets/image-20220823113124221.png" alt="image-20220823113124221" style="zoom:50%;" />
+
+点击`Configure`
+
+![image-20220823113328034](assets/image-20220823113328034.png)
+
+把这个部分全部删除，替换成以下内容
+
+```
+name: time-push
+on:
+  workflow_dispatch:
+  schedule: 
+    # 代表国际标准时间4点0分，北京时间需要+8小时，代表北京时间中午12点运行
+    - cron: '0 4 * * *'
+jobs:
+#将工作流程中运行的所有作业组合在一起
+  build:
+  #定义名为 build 的作业。 子键将定义作业的属性 
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.1
+      - name: Set timezone
+        run: |
+          cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      - name: install pip packages
+        run: |
+          python -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+      - name: time-push
+        run: |
+          python3 main.py
+```
+
+其中倒数第三行这里的`name:`后面填写你在2.1中创建的这个仓库的名字，我这里就填写`time-push`
+
+<img src="assets/image-20220823114200540.png" alt="image-20220823114200540" style="zoom:50%;" />
+
+完成后点击`Start commit`提交
+
+![image-20220823114258873](assets/image-20220823114258873.png)
+
+这里可以随便写
+
+<img src="assets/image-20220823114350606.png" alt="image-20220823114350606" style="zoom:50%;" />
+
+然后我们点击仓库名称回到主界面
+
+<img src="assets/image-20220823114508461.png" alt="image-20220823114508461" style="zoom:50%;" />
+
+点击`Add file`按钮![image-20220823114532016](assets/image-20220823114532016.png)
+
+![image-20220823114600355](assets/image-20220823114600355.png)
+
+选择`Upload files`
+
+点击`Choose your files`
+
+<img src="assets/image-20220823114648355.png" alt="image-20220823114648355" style="zoom:50%;" />
+
+这里以呆瓜版举例，需要上传 `cityinfo.py` `config.json` `main.py` `requirements.txt`四个文件
+
+注意需要是你已经在第一章里面已经测试成功推送后的文件，报错的就不要上传了
+
+![image-20220823114834429](assets/image-20220823114834429.png)
+
+点击`Commit changes`
+
+<img src="assets/image-20220823115007790.png" alt="image-20220823115007790" style="zoom:50%;" />
+
+然后看到仓库里面文件都有了就成功了
+
+<img src="assets/image-20220823115106283.png" alt="image-20220823115106283" style="zoom: 33%;" />
 
 
-**<u>第二部分暂不可用，后面解决问题后会再补充</u>**
 
-# ~~二、使用腾讯云函数实现自动推送~~
+**<u>第三部分暂不可用，后面解决问题后会再补充</u>**
+
+# ~~三、使用腾讯云函数实现自动推送（暂不可用）~~
 
 ~~**想要挂到服务器上的同学，直接跳到后面-挂服务器教程**~~
 
@@ -311,7 +426,7 @@
 
 
 
-# 三、源码版教程-适合有基础的同学改编拓展
+# 四、源码版教程-适合有基础的同学改编拓展
 
 **###注：源码版教程适合有一定编程基础的人，完全小白实现困难。**
 
@@ -466,7 +581,7 @@ import json
 
 注：如果要在VS CODE中运行，需要先在vs code中打开相应的文件夹
 
-# 四、附挂服务器（家用电脑也可以）自动任务教程
+# 五、附挂服务器（家用电脑也可以）自动任务教程
 
 注意：没有服务器的话，用家用电脑也可以，但是在电脑关机的情况下，无法进行自动任务。
 
@@ -580,7 +695,7 @@ pip3 install requests
 
 全部完成~
 
-# 五、后言
+# 六、后言&捐赠渠道
 
 感谢大家一直以来的支持，当时没想到会有这么多人关注这个项目，我在这次项目中也学到了很多，所有代码都全部开源，大家可以自行学习修改，拓展。
 
