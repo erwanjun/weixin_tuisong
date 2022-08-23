@@ -274,7 +274,6 @@
 把这个部分全部删除，替换成以下内容
 
 ```
-<<<<<<< HEAD
 name: time-push
 on:
   workflow_dispatch:
@@ -303,32 +302,6 @@ jobs:
       - name: time-push
         run: |
           python3 main.py
-=======
-name: run 
- on: 
- workflow_dispatch: 
- schedule:  
- # 代表国际标准时间4点0分，北京时间需要+8小时，代表北京时间中午12点运行 
- - cron: '0 21 * * *' 
- jobs: 
- #将工作流程中运行的所有作业组合在一起 
- build: 
- #定义名为 build 的作业。 子键将定义作业的属性  
- runs-on: ubuntu-latest  
- steps: 
- - uses: actions/checkout@v2 
-   - name: Set up Python 3.9 
- uses: actions/setup-python@v2 
- with: 
- python-version: 3.9.1 
- - name: install pip packages 
- run: | 
- python -m pip install --upgrade pip 
- pip3 install -r requirements.txt 
- - name: 你的目录名称 
- run: | 
- python ./main.py 
->>>>>>> main
 ```
 
 其中倒数第三行这里的`name:`后面填写你在2.1中创建的这个仓库的名字，我这里就填写`time-push`
