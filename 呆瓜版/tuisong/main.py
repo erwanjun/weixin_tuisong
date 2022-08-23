@@ -8,6 +8,8 @@ import os
 import http.client, urllib
 import json
 from zhdate import ZhDate
+global false, null, true
+false = null = true = ''
 def get_color():
     # 获取随机颜色
     get_colors = lambda n: list(map(lambda i: "#" + "%06x" % random.randint(0, 0xFFFFFF), range(n)))
@@ -101,98 +103,104 @@ def get_weather(province, city):
 
 #词霸每日一句
 def get_ciba():
-    if (Whether_Eng!="否"):
-        url = "http://open.iciba.com/dsapi/"
-        headers = {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-        }
-        r = get(url, headers=headers)
-        note_en = r.json()["content"]
-        note_ch = r.json()["note"]
-        return note_ch, note_en
-    else:
-        return "",""
+    if (Whether_Eng!=False):
+        try:
+            url = "http://open.iciba.com/dsapi/"
+            headers = {
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                            'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+            }
+            r = get(url, headers=headers)
+            note_en = r.json()["content"]
+            note_ch = r.json()["note"]
+            return (note_en,note_ch)
+        except:
+            return ("词霸API调取错误")
 
 
 #彩虹屁
 def caihongpi():
-    if (caihongpi_API!="否"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':caihongpi_API})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/caihongpi/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        data = data["newslist"][0]["content"]
-        if("XXX" in data):
-            data.replace("XXX","蒋蒋")
-        return data
-    else:
-        return ""
+    if (Whether_caihongpi!=False):
+        try:
+            conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+            params = urllib.parse.urlencode({'key':tianxing_API})
+            headers = {'Content-type':'application/x-www-form-urlencoded'}
+            conn.request('POST','/caihongpi/index',params,headers)
+            res = conn.getresponse()
+            data = res.read()
+            data = json.loads(data)
+            data = data["newslist"][0]["content"]
+            if("XXX" in data):
+                data.replace("XXX","蒋蒋")
+            return data
+        except:
+            return ("彩虹屁API调取错误，请检查API是否正确申请或是否填写正确")
 
 #健康小提示API
 def health():
-    if (health_API!="否"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':health_API})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/healthtip/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        data = data["newslist"][0]["content"]
-        return data
-    else:
-        return ""
+    if (Whether_health!=False):
+        try:
+            conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+            params = urllib.parse.urlencode({'key':tianxing_API})
+            headers = {'Content-type':'application/x-www-form-urlencoded'}
+            conn.request('POST','/healthtip/index',params,headers)
+            res = conn.getresponse()
+            data = res.read()
+            data = json.loads(data)
+            data = data["newslist"][0]["content"]
+            return data
+        except:
+             return ("健康小提示API调取错误，请检查API是否正确申请或是否填写正确")
 
 #星座运势
 def lucky():
-    if (lucky_API!="否"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':lucky_API,'astro':astro})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/star/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        data = "速配星座："+str(data["newslist"][7]["content"])+"\n爱情指数："+str(data["newslist"][1]["content"])+"   工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
-        return data
-    else:
-        return ""
+    if ( Whether_lucky!=False):
+        try:
+            conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+            params = urllib.parse.urlencode({'key':tianxing_API,'astro':astro})
+            headers = {'Content-type':'application/x-www-form-urlencoded'}
+            conn.request('POST','/star/index',params,headers)
+            res = conn.getresponse()
+            data = res.read()
+            data = json.loads(data)
+            data = "爱情指数："+str(data["newslist"][1]["content"])+"   工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
+            return data
+        except:
+            return ("星座运势API调取错误，请检查API是否正确申请或是否填写正确")
 
 #励志名言
 def lizhi():
-    if (lizhi_API!="否"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':lizhi_API})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/lzmy/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        return data["newslist"][0]["saying"]
-    else:
-        return ""
+    if (Whether_lizhi!=False):
+        try:
+            conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+            params = urllib.parse.urlencode({'key':tianxing_API})
+            headers = {'Content-type':'application/x-www-form-urlencoded'}
+            conn.request('POST','/lzmy/index',params,headers)
+            res = conn.getresponse()
+            data = res.read()
+            data = json.loads(data)
+            return data["newslist"][0]["saying"]
+        except:
+            return ("励志古言API调取错误，请检查API是否正确申请或是否填写正确")
         
 
 #下雨概率和建议
 def tip():
-    if (tianqi_API!="否"):
-        conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-        params = urllib.parse.urlencode({'key':tianqi_API,'city':city})
-        headers = {'Content-type':'application/x-www-form-urlencoded'}
-        conn.request('POST','/tianqi/index',params,headers)
-        res = conn.getresponse()
-        data = res.read()
-        data = json.loads(data)
-        pop = data["newslist"][0]["pop"]
-        tips = data["newslist"][0]["tips"]
-        return pop,tips
-    else:
-        return "",""
+    if (Whether_tip!=False):
+        try:
+            conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+            params = urllib.parse.urlencode({'key':tianxing_API,'city':city})
+            headers = {'Content-type':'application/x-www-form-urlencoded'}
+            conn.request('POST','/tianqi/index',params,headers)
+            res = conn.getresponse()
+            data = res.read()
+            data = json.loads(data)
+            pop = data["newslist"][0]["pop"]
+            tips = data["newslist"][0]["tips"]
+            return pop,tips
+        except:
+            return ("天气预报API调取错误，请检查API是否正确申请或是否填写正确")
 
 #推送信息
 def send_message(to_user, access_token, city_name, weather, max_temperature, min_temperature, pipi, lizhi, pop, tips, note_en, note_ch, health_tip, lucky_):
@@ -328,18 +336,20 @@ if __name__ == "__main__":
     # 传入省份和市获取天气信息
     province, city = config["province"], config["city"]
     weather, max_temperature, min_temperature = get_weather(province, city)
-    #获取彩虹屁API
-    caihongpi_API=config["caihongpi_API"]
-    #获取励志古言API
-    lizhi_API=config["lizhi_API"]
-    #获取天气预报API
-    tianqi_API=config["tianqi_API"]
-    #是否启用词霸每日金句
+    #获取天行API
+    tianxing_API=config["tianxing_API"]
+    #是否开启天气预报API
+    Whether_tip=config["Whether_tip"]
+    #是否启用词霸每日一句
     Whether_Eng=config["Whether_Eng"]
-    #获取健康小提示API
-    health_API=config["health_API"]
-    #获取星座运势API
-    lucky_API=config["lucky_API"]
+    #是否启用星座API
+    Whether_lucky=config["Whether_lucky"]
+    #是否启用励志古言API
+    Whether_lizhi=config["Whether_lizhi"]
+    #是否启用彩虹屁API
+    Whether_caihongpi=config["Whether_caihongpi"]
+    #是否启用健康小提示API
+    Whether_health=config["Whether_health"]
     #获取星座
     astro = config["astro"]
     # 获取词霸每日金句

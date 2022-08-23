@@ -2,16 +2,10 @@ from tkinter import *
 import json
 #导入json头文件
 import os,sys
-
+global false, null, true
+false = null = true = ''
 
 global inp1,inp2,inp3,inp4,inp5,inp6,inp7,inp8,inp9,inp10,inp11,inp12,inp13,inp14
-
-##############定义函数区####################
-
-
-
-
-
 
 
 
@@ -89,7 +83,7 @@ inp9.place(relx=0.3, rely=0.45, relwidth=0.2, relheight=0.05)
 
 lb10= Label(root, text='是否启用词霸每日一句英语')
 lb10.place(relx=0.1, rely=0.5, relwidth=0.2, relheight=0.05)
-lb10_ = Label(root, text='例：否')
+lb10_ = Label(root, text='是填 True 否填 False，例:False，注意大小写')
 lb10_.place(relx=0.55, rely=0.5, relwidth=0.4, relheight=0.05)
 inp10 = Entry(root)
 inp10.place(relx=0.3, rely=0.5, relwidth=0.2, relheight=0.05)
@@ -145,7 +139,7 @@ def win():
     check5.pack (side = LEFT)
     # 定义执行函数
     def study():
-        global app_id_out,app_secret_out,template_id_out,user_out,province_out,city_out,birthday1_out,birthday2_out,love_date_out,Whether_Eng_out,key1_out,astro_out,user2_out,key2_out,key3_out,key4_out,key5_out
+        global app_id_out,app_secret_out,template_id_out,user_out,province_out,city_out,birthday1_out,birthday2_out,love_date_out,Whether_Eng_out,Whether_caihongpi,astro_out,user2_out,Whether_health,Whether_lucky,Whether_lizhi,Whether_tip
         # 没有选择任何项目的情况下
         if (CheckVar1.get() == 0 and CheckVar2.get() == 0 and CheckVar3.get() == 0 and CheckVar4.get() == 0 and CheckVar5.get() == 0):
             s = '您还没选择任语言'
@@ -159,15 +153,15 @@ def win():
             #设置标签lb2的字体
             lb2.config(text=s)
             if(CheckVar1.get() == 0):
-                key1_out="否"
+                Whether_caihongpi=False
             if(CheckVar2.get() == 0):
-                key2_out="否"
+                Whether_health=False
             if(CheckVar3.get() == 0):
-                key3_out="否"
+                Whether_lucky=False
             if(CheckVar4.get() == 0):
-                key4_out="否"
+                Whether_lizhi=False
             if(CheckVar5.get() == 0):
-                key5_out="否"
+                Whether_tip=False
        
 
 
@@ -189,7 +183,7 @@ def win():
 btn1 = Button(root, text='确定', command=lambda:[save(),root.destroy(),win()])
 btn1.place(relx=0.4, rely=0.8, relwidth=0.3, relheight=0.05)
 def save():
-    global app_id_out,app_secret_out,template_id_out,user_out,province_out,city_out,birthday1_out,birthday2_out,love_date_out,Whether_Eng_out,key1_out,astro_out,user2_out,key2_out,key3_out,key4_out,key5_out
+    global app_id_out,app_secret_out,template_id_out,user_out,province_out,city_out,birthday1_out,birthday2_out,love_date_out,Whether_Eng_out,tianxing_API,astro_out,user2_out,Whether_caihongpi,Whether_health,Whether_tip,Whether_lizhi,Whether_lucky
     app_id_out =str(inp1.get())
     app_secret_out =str(inp2.get())
     template_id_out=str(inp3.get())
@@ -199,13 +193,14 @@ def save():
     birthday1_out=str(inp7.get())
     birthday2_out=str(inp8.get())
     love_date_out=str(inp9.get())
-    Whether_Eng_out=str(inp10.get())
-    key1_out=str(inp11.get())
-    key2_out=str(inp11.get())
-    key3_out=str(inp11.get())
-    key4_out=str(inp11.get())
-    key5_out=str(inp11.get())
+    Whether_Eng_out=inp10.get()
+    tianxing_API=str(inp11.get())
     astro_out=str(inp12.get())
+    Whether_caihongpi=False
+    Whether_health=False
+    Whether_tip=False
+    Whether_lizhi=False
+    Whether_lucky=False
     user2_out=str(inp13.get())
 
 # 在窗体垂直自上而下位置70%处起，布局相对窗体高度40%高的文本框
@@ -259,16 +254,14 @@ def get_json_data(json_path):
         #修改内容
         params['Whether_Eng'] = Whether_Eng_out
         #修改内容
-        params['caihongpi_API'] = key1_out
-        params['lizhi_API'] = key4_out
-        params['tianqi_API'] = key3_out
-        params['health_API'] = key2_out
-        params['lucky_API'] = key5_out
+        params['Whether_caihongpi'] = Whether_caihongpi
+        params['Whether_lizhi'] = Whether_lizhi
+        params['Whether_tip'] = Whether_tip
+        params['Whether_health'] = Whether_health
+        params['Whether_lucky'] = Whether_lucky
+        params['tianxing_API'] = tianxing_API
         params['astro'] = astro_out
-  
-        
-        
-        
+
         print("params",params)
         #打印
         
